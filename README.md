@@ -1,16 +1,8 @@
-<div align="center">
+# JanSaadhan
 
-# 🇮🇳 JanSaadhan
-### *Making Government Welfare Schemes Accessible for Every Citizen*
+### _Making Government Welfare Schemes Accessible for Every Citizen_
 
-![React](https://img.shields.io/badge/React-Frontend-61DAFB?logo=react)
-![Node.js](https://img.shields.io/badge/Node.js-Backend-339933?logo=node.js)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?logo=mongodb)
-![License](https://img.shields.io/badge/License-MIT-blue)
-
-*A smart eligibility platform that helps citizens discover, understand, and apply for government welfare schemes in minutes.*
-
-</div>
+_A smart eligibility platform that helps citizens discover, understand, and apply for government welfare schemes in minutes._
 
 ---
 
@@ -18,7 +10,7 @@
 
 Government welfare schemes often remain underutilized because eligible citizens struggle to discover them, understand complex eligibility criteria, or locate the correct application portal.
 
-**JanSaadhan** bridges this gap through an intelligent rule-based recommendation engine that provides personalized scheme suggestions, simplified explanations, and verified application links—all in one place.
+**JanSaadhan** bridges this gap through a lightweight, rule-based eligibility checker that provides personalized scheme suggestions, simplified explanations, and verified application links — all in one place, with no backend or database required.
 
 ---
 
@@ -26,18 +18,18 @@ Government welfare schemes often remain underutilized because eligible citizens 
 
 ## Current Challenges
 
-| Problem | Impact |
-|----------|--------|
-| 🔍 Low Scheme Awareness | Millions of eligible citizens never discover relevant schemes. |
-| 📑 Complex Government Language | Official eligibility criteria are difficult to understand. |
-| 🌐 Fragmented Information | Information is spread across multiple ministry websites. |
-| 🚧 Difficult Application Process | Users struggle to locate genuine application portals. |
+| Problem                          | Impact                                                         |
+| -------------------------------- | -------------------------------------------------------------- |
+| 🔍 Low Scheme Awareness          | Millions of eligible citizens never discover relevant schemes. |
+| 📑 Complex Government Language   | Official eligibility criteria are difficult to understand.     |
+| 🌐 Fragmented Information        | Information is spread across multiple ministry websites.       |
+| 🚧 Difficult Application Process | Users struggle to locate genuine application portals.          |
 
 ---
 
 # 💡 Our Solution
 
-JanSaadhan simplifies welfare scheme discovery through an intuitive and intelligent platform.
+JanSaadhan simplifies welfare scheme discovery through a simple, fast, static web page — no sign-up, no server, no delay.
 
 ### Key Features
 
@@ -47,7 +39,7 @@ JanSaadhan simplifies welfare scheme discovery through an intuitive and intellig
 - ✅ Required Documents Checklist
 - ✅ Official Verified Application Links
 - ✅ Mobile-Friendly Interface
-- ✅ Multi-language Ready Architecture
+- ✅ Zero Backend — Runs Entirely in the Browser
 
 ---
 
@@ -67,8 +59,15 @@ JanSaadhan simplifies welfare scheme discovery through an intuitive and intellig
           │
           ▼
  ┌──────────────────┐
+ │ app.js           │
  │ Eligibility      │
- │ Rule Engine      │
+ │ Matching Logic   │
+ └────────┬─────────┘
+          │
+          ▼
+ ┌──────────────────┐
+ │ schemes.js       │
+ │ Scheme Dataset   │
  └────────┬─────────┘
           │
           ▼
@@ -96,20 +95,19 @@ JanSaadhan simplifies welfare scheme discovery through an intuitive and intellig
 
 # 🏗️ Tech Stack
 
-| Layer | Technology |
-|--------|------------|
-| 🎨 Frontend | React.js / Next.js |
-| 💅 Styling | Tailwind CSS |
-| ⚙️ Backend | Node.js + Express.js |
-| 🗄 Database | MongoDB / PostgreSQL |
-| 🧠 Matching Engine | JSON Rule-Based Eligibility Engine |
-| ☁ Deployment | Vercel + Render / Railway |
+| Layer          | Technology                                       |
+| -------------- | ------------------------------------------------ |
+| 🎨 Structure   | HTML5                                            |
+| 💅 Styling     | CSS3                                             |
+| ⚙️ Logic       | JavaScript (Vanilla JS)                          |
+| 🧠 Scheme Data | JSON-style JS Data File (`schemes.js`)           |
+| ☁ Deployment   | GitHub Pages / Netlify / Vercel (Static Hosting) |
 
 ---
 
 # 🧠 Matching Engine
 
-The eligibility engine compares user information with predefined scheme rules.
+The eligibility logic in `app.js` compares user input against the scheme definitions stored in `schemes.js`.
 
 ### Inputs
 
@@ -141,41 +139,47 @@ The eligibility engine compares user information with predefined scheme rules.
 
 # ⭐ Unique Selling Proposition
 
-| Feature | JanSaadhan |
-|-----------|------------|
-| Plain-language explanations | ✅ |
-| Rule-based eligibility (No AI hallucinations) | ✅ |
-| Official application links | ✅ |
-| Lightweight & Mobile Optimized | ✅ |
-| Easy to Scale | ✅ |
+| Feature                                       | JanSaadhan |
+| --------------------------------------------- | ---------- |
+| Plain-language explanations                   | ✅         |
+| Rule-based eligibility (No AI hallucinations) | ✅         |
+| Official application links                    | ✅         |
+| Lightweight & Mobile Optimized                | ✅         |
+| No Backend / Database Needed                  | ✅         |
+| Instant Load — Static Site                    | ✅         |
 
 ---
 
 # 📂 Project Structure
 
 ```text
-JanSaadhan
+JanSaadhan/
 │
-├── client
-│   ├── components
-│   ├── pages
-│   ├── assets
-│   ├── hooks
-│   └── styles
-│
-├── server
-│   ├── controllers
-│   ├── routes
-│   ├── models
-│   ├── middleware
-│   ├── utils
-│   └── data
-│       └── schemes.json
-│
+├── index.html      # Main page markup
+├── style.css       # Styling and layout
+├── app.js          # Eligibility logic & UI interactions
+├── schemes.js      # Scheme dataset used for matching
 ├── README.md
-├── package.json
-└── .env
+└── assets/         # Images, icons, and other static files
 ```
+
+---
+
+# ▶️ Getting Started
+
+No installation or build tools required — this is a fully static site.
+
+```bash
+# Clone the repository
+git clone https://github.com/vibhorsahu26/JanSaadhan.git
+
+# Move into the project folder
+cd JanSaadhan
+
+# Open index.html directly in your browser
+```
+
+Or, for live-reload during development, open the folder in VS Code and use the **Live Server** extension.
 
 ---
 
@@ -186,7 +190,7 @@ JanSaadhan
 - 🌍 Regional Language Support
 - 📄 OCR-Based Document Verification
 - 🔔 Notification for New Schemes
-- 👤 User Accounts & Saved Schemes
+- 👤 User Accounts & Saved Schemes (would require backend)
 - 📈 Analytics Dashboard
 
 ---
@@ -195,28 +199,28 @@ JanSaadhan
 
 ### Technical
 
-Uses structured JSON datasets and a deterministic rule engine, making it ideal for rapid hackathon development.
+Uses a structured JavaScript dataset (`schemes.js`) and simple conditional logic in `app.js`, making it easy to build, debug, and deploy quickly.
 
 ### Scalability
 
-Adding new schemes only requires updating JSON definitions—no backend logic changes are needed.
+Adding new schemes only requires updating `schemes.js` — no build process or backend changes needed.
 
 ### Accessibility
 
-Designed for users with limited digital literacy using a clean, responsive interface.
+Designed for users with limited digital literacy using a clean, responsive, single-page interface.
 
 ---
 
 # 🥊 Competitor Comparison
 
-| Feature | JanSaadhan | myScheme | Haqdarshak |
-|----------|:----------:|:--------:|:----------:|
-| Simple UI | ✅ | ❌ | ✅ |
-| Instant Eligibility Matching | ✅ | ⚠️ | ⚠️ |
-| Plain Language | ✅ | ❌ | ✅ |
-| Official Links | ✅ | ✅ | ✅ |
-| Self-Service Platform | ✅ | ✅ | ❌ |
-| Fast Mobile Experience | ✅ | ⚠️ | ⚠️ |
+| Feature                      | JanSaadhan | myScheme | Haqdarshak |
+| ---------------------------- | :--------: | :------: | :--------: |
+| Simple UI                    |     ✅     |    ❌    |     ✅     |
+| Instant Eligibility Matching |     ✅     |    ⚠️    |     ⚠️     |
+| Plain Language               |     ✅     |    ❌    |     ✅     |
+| Official Links               |     ✅     |    ✅    |     ✅     |
+| Self-Service Platform        |     ✅     |    ✅    |     ❌     |
+| Fast Mobile Experience       |     ✅     |    ⚠️    |     ⚠️     |
 
 ---
 
@@ -235,13 +239,15 @@ Contributions are welcome!
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/vibhorsahu26/JanSaadhan.git
 
-# Install dependencies
-npm install
+# Move into the project folder
+cd JanSaadhan
 
-# Start the development server
-npm run dev
+# Make your changes, then commit and push
+git add .
+git commit -m "Your change description"
+git push origin main
 ```
 
 ---
@@ -252,12 +258,8 @@ This project is developed for educational purposes and hackathon participation.
 
 ---
 
-<div align="center">
-
 ## 👥 Team JanSaadhan
 
 **Built with ❤️ to bridge the gap between citizens and government welfare schemes.**
 
-*"Empowering Every Citizen Through Accessible Information."*
-
-</div>
+_"Empowering Every Citizen Through Accessible Information."_
