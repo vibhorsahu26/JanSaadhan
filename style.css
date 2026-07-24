@@ -2238,3 +2238,12 @@ body.dark .feature p{
     font-weight:600;
 
 }
+.view-more-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:45px;
+
+}
