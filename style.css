@@ -1977,3 +1977,42 @@ header{
     margin-top:25px;
 
 }
+.results-container{
+
+    margin-top:40px;
+
+}
+
+.results-title{
+
+    font-size:2rem;
+
+    font-weight:600;
+
+    margin-bottom:24px;
+
+}
+
+.result-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:24px;
+
+}
+
+.no-results{
+
+    text-align:center;
+
+    padding:40px 20px;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.08);
+
+}

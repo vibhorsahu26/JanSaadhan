@@ -889,12 +889,18 @@ function renderQuestionnaire() {
 
             console.log("User Answers:", userAnswers);
 
-            console.log("Matching Schemes:", matches);
+            console.table(matches);
+
+            renderResults(matches);
+
+            document.getElementById("resultsContainer").scrollIntoView({
+
+                behavior: "smooth"
+
+            });
 
         }
-
     });
-
 }
 
 function saveCurrentStep() {
@@ -912,132 +918,223 @@ function saveCurrentStep() {
         }
 
     });
-
-    function matchesCriteria(userValue, schemeValue) {
-
-        if (schemeValue === null) return true;
-
-        if (Array.isArray(schemeValue)) {
-            return schemeValue.includes(userValue);
-        }
-
-        return userValue === schemeValue;
-
-    }
-
 }
+
 function matchesCriteria(userValue, criteriaValue) {
 
-        // No restriction
-        if (!criteriaValue) {
-            return true;
-        }
-
-        // Any value is accepted
-        if (criteriaValue === "Any") {
-            return true;
-        }
-
-        // Multiple allowed values
-        if (Array.isArray(criteriaValue)) {
-            return criteriaValue.includes(userValue);
-        }
-
-        // Exact match
-        return userValue === criteriaValue;
+    // No restriction
+    if (!criteriaValue) {
+        return true;
     }
-function findMatchingSchemes() {
 
-    return featuredSchemes.filter((scheme) => {
+    // Any value is accepted
+    if (criteriaValue === "Any") {
+        return true;
+    }
 
-        const criteria = scheme.criteria;
+    // Multiple allowed values
+    if (Array.isArray(criteriaValue)) {
+        return criteriaValue.includes(userValue);
+    }
 
-        // Occupation
-        if (
-            !matchesCriteria(
-                userAnswers.occupation,
-                criteria.occupation
-            )
-        ) {
-            return false;
-        }
+    // Exact match
+    return userValue === criteriaValue;
+}
+function calculateMatchScore(scheme) {
 
-        // Category
-        if (
-            !matchesCriteria(
-                userAnswers.category,
-                criteria.category
-            )
-        ) {
-            return false;
-        }
+    const criteria = scheme.criteria;
 
-        // Gender
-        if (
-            !matchesCriteria(
-                userAnswers.gender,
-                criteria.gender
-            )
-        ) {
-            return false;
-        }
+    let score = 0;
+    let total = 0;
 
-        // Disability
-        if (
-            !matchesCriteria(
-                userAnswers.disability,
-                criteria.disability
-            )
-        ) {
-            return false;
-        }
+    function check(userValue, schemeValue) {
 
-        // BPL
-        if (
-            !matchesCriteria(
-                userAnswers.bpl,
-                criteria.bpl
-            )
-        ) {
-            return false;
-        }
+        if (schemeValue === null) return;
 
-        // State
-        if (
-            !matchesCriteria(
-                userAnswers.state,
-                criteria.state
-            )
-        ) {
-            return false;
-        }
+        total++;
 
-        // Income
-        if (
-            !matchesCriteria(
-                userAnswers.income,
-                criteria.income
-            )
-        ) {
-            return false;
-        }
-
-        // Age
-        if (criteria.age) {
-
-            const age = Number(userAnswers.age);
-
-            if (
-                age < criteria.age.min ||
-                age > criteria.age.max
-            ) {
-                return false;
+        if (Array.isArray(schemeValue)) {
+            if (schemeValue.includes(userValue)) {
+                score++;
             }
         }
+        else if (userValue === schemeValue) {
+            score++;
+        }
+    }
 
-        return true;
+    check(userAnswers.occupation, criteria.occupation);
+    check(userAnswers.category, criteria.category);
+    check(userAnswers.gender, criteria.gender);
+    check(userAnswers.disability, criteria.disability);
+    check(userAnswers.bpl, criteria.bpl);
+    check(userAnswers.state, criteria.state);
+    check(userAnswers.income, criteria.income);
+
+    if (criteria.age) {
+
+        total++;
+
+        const age = Number(userAnswers.age);
+
+        if (
+            age >= criteria.age.min &&
+            age <= criteria.age.max
+        ) {
+            score++;
+        }
+    }
+
+    if (total === 0) {
+        return 100;
+    }
+
+    return Math.round((score / total) * 100);
+}
+function findMatchingSchemes() {
+
+    return featuredSchemes
+        .filter((scheme) => {
+
+            const criteria = scheme.criteria;
+
+            if (!matchesCriteria(userAnswers.occupation, criteria.occupation))
+                return false;
+
+            if (!matchesCriteria(userAnswers.category, criteria.category))
+                return false;
+
+            if (!matchesCriteria(userAnswers.gender, criteria.gender))
+                return false;
+
+            if (!matchesCriteria(userAnswers.disability, criteria.disability))
+                return false;
+
+            if (!matchesCriteria(userAnswers.bpl, criteria.bpl))
+                return false;
+
+            if (!matchesCriteria(userAnswers.state, criteria.state))
+                return false;
+
+            if (!matchesCriteria(userAnswers.income, criteria.income))
+                return false;
+
+            if (criteria.age) {
+
+                const age = Number(userAnswers.age);
+
+                if (
+                    age < criteria.age.min ||
+                    age > criteria.age.max
+                ) {
+                    return false;
+                }
+            }
+
+            return true;
+
+        })
+
+        .map((scheme) => ({
+            ...scheme,
+            matchScore: calculateMatchScore(scheme)
+        }))
+
+        .sort((a, b) => b.matchScore - a.matchScore);
+
+}
+
+function renderResults(matches) {
+
+    const container = document.getElementById("resultsContainer");
+
+    container.innerHTML = "";
+
+    if (matches.length === 0) {
+
+        container.innerHTML = `
+            <div class="no-results">
+
+                <h2>No Matching Schemes Found</h2>
+
+                <p>
+                    Try changing your details to discover more schemes.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <h2 class="results-title">
+            Eligible Schemes (${matches.length})
+        </h2>
+
+        <div class="result-grid" id="resultGrid"></div>
+    `;
+
+    const resultGrid = document.getElementById("resultGrid");
+
+    matches.forEach((scheme) => {
+
+        const card = document.createElement("div");
+
+        card.className = "scheme-card";
+
+        card.innerHTML = `
+            <div class="scheme-category ${scheme.category.toLowerCase()}">
+
+                <i data-lucide="${categoryIcons[scheme.category]}"></i>
+
+                <span>${scheme.category}</span>
+
+            </div>
+
+            <h3>${scheme.name}</h3>
+
+            <div class="scheme-provider">
+
+                <i data-lucide="building-2"></i>
+
+                <span>${scheme.provider}</span>
+
+            </div>
+
+            <p class="scheme-description">
+
+                ${scheme.description}
+
+            </p>
+
+            <div class="scheme-footer">
+
+                <span class="scheme-tag">
+
+                    ${scheme.occupation}
+
+                </span>
+
+                <button
+                    class="scheme-btn view-details"
+                    data-id="${scheme.id}"
+                >
+
+                    View Details
+
+                    <i data-lucide="arrow-right"></i>
+
+                </button>
+
+            </div>
+        `;
+
+        resultGrid.appendChild(card);
 
     });
+
+    lucide.createIcons();
 
 }
 
