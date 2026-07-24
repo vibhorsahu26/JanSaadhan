@@ -39,6 +39,20 @@ const featuredSchemes = [
             "Eligible Agricultural Land Owner"
         ],
 
+        criteria: {
+            occupation: ["Farmer"],
+            income: null,
+            category: null,
+            gender: null,
+            age: {
+                min: 18,
+                max: 100
+            },
+            disability: null,
+            bpl: null,
+            state: null
+        },
+
         officialWebsite: "https://pmkisan.gov.in/"
     },
 
@@ -67,6 +81,20 @@ const featuredSchemes = [
             "Eligible Beneficiary",
             "Indian Citizen"
         ],
+
+        criteria: {
+            occupation: null,
+            income: null,
+            category: null,
+            gender: null,
+            age: {
+                min: 18,
+                max: 100
+            },
+            disability: null,
+            bpl: null,
+            state: null
+        },
 
         officialWebsite: "https://beneficiary.nha.gov.in/"
     },
@@ -99,6 +127,20 @@ const featuredSchemes = [
             "Low Income Group"
         ],
 
+        criteria: {
+            occupation: null,
+            income: null,
+            category: null,
+            gender: null,
+            age: {
+                min: 18,
+                max: 100
+            },
+            disability: null,
+            bpl: null,
+            state: null
+        },
+
         officialWebsite: "https://pmaymis.gov.in/"
     },
 
@@ -130,6 +172,21 @@ const featuredSchemes = [
             "Entrepreneur",
             "Small Business Owner"
         ],
+        criteria: {
+            occupation: [
+                "Self Employed"
+            ],
+            income: null,
+            category: null,
+            gender: null,
+            age: {
+                min: 18,
+                max: 100
+            },
+            disability: null,
+            bpl: null,
+            state: null
+        },
 
         officialWebsite: "https://www.mudra.org.in/"
     },
@@ -163,6 +220,22 @@ const featuredSchemes = [
             "Recognized Institution"
         ],
 
+        criteria: {
+            occupation: [
+                "Student"
+            ],
+            income: null,
+            category: null,
+            gender: null,
+            age: {
+                min: 18,
+                max: 100
+            },
+            disability: null,
+            bpl: null,
+            state: null
+        },
+
         officialWebsite: "https://scholarships.gov.in/"
     },
 
@@ -195,6 +268,24 @@ const featuredSchemes = [
             "Indian Citizen",
             "Savings Bank Account Holder"
         ],
+        criteria: {
+            occupation: [
+                "Farmer",
+                "Self Employed",
+                "Private Employee",
+                "Unemployed"
+            ],
+            income: null,
+            category: null,
+            gender: null,
+            age: {
+                min: 18,
+                max: 100
+            },
+            disability: null,
+            bpl: null,
+            state: null
+        },
 
         officialWebsite: "https://www.npscra.nsdl.co.in/"
     }
@@ -794,7 +885,11 @@ function renderQuestionnaire() {
 
         } else {
 
-            alert("Eligibility engine coming next!");
+            const matches = findMatchingSchemes();
+
+            console.log("User Answers:", userAnswers);
+
+            console.log("Matching Schemes:", matches);
 
         }
 
@@ -818,8 +913,134 @@ function saveCurrentStep() {
 
     });
 
+    function matchesCriteria(userValue, schemeValue) {
+
+        if (schemeValue === null) return true;
+
+        if (Array.isArray(schemeValue)) {
+            return schemeValue.includes(userValue);
+        }
+
+        return userValue === schemeValue;
+
+    }
 
 }
+function matchesCriteria(userValue, criteriaValue) {
+
+        // No restriction
+        if (!criteriaValue) {
+            return true;
+        }
+
+        // Any value is accepted
+        if (criteriaValue === "Any") {
+            return true;
+        }
+
+        // Multiple allowed values
+        if (Array.isArray(criteriaValue)) {
+            return criteriaValue.includes(userValue);
+        }
+
+        // Exact match
+        return userValue === criteriaValue;
+    }
+function findMatchingSchemes() {
+
+    return featuredSchemes.filter((scheme) => {
+
+        const criteria = scheme.criteria;
+
+        // Occupation
+        if (
+            !matchesCriteria(
+                userAnswers.occupation,
+                criteria.occupation
+            )
+        ) {
+            return false;
+        }
+
+        // Category
+        if (
+            !matchesCriteria(
+                userAnswers.category,
+                criteria.category
+            )
+        ) {
+            return false;
+        }
+
+        // Gender
+        if (
+            !matchesCriteria(
+                userAnswers.gender,
+                criteria.gender
+            )
+        ) {
+            return false;
+        }
+
+        // Disability
+        if (
+            !matchesCriteria(
+                userAnswers.disability,
+                criteria.disability
+            )
+        ) {
+            return false;
+        }
+
+        // BPL
+        if (
+            !matchesCriteria(
+                userAnswers.bpl,
+                criteria.bpl
+            )
+        ) {
+            return false;
+        }
+
+        // State
+        if (
+            !matchesCriteria(
+                userAnswers.state,
+                criteria.state
+            )
+        ) {
+            return false;
+        }
+
+        // Income
+        if (
+            !matchesCriteria(
+                userAnswers.income,
+                criteria.income
+            )
+        ) {
+            return false;
+        }
+
+        // Age
+        if (criteria.age) {
+
+            const age = Number(userAnswers.age);
+
+            if (
+                age < criteria.age.min ||
+                age > criteria.age.max
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+
+    });
+
+}
+
 function validateCurrentStep() {
 
     const step = questionnaire[currentStep];
