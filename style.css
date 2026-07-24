@@ -925,10 +925,6 @@ header{
 
 }
 
-/* ==========================================
-            RIGHT SIDE
-========================================== */
-
 .about-visual{
 
     display:grid;
@@ -1003,10 +999,6 @@ header{
 
 }
 
-/* ==========================================
-            SMALL CARDS
-========================================== */
-
 .about-card.small{
 
     display:flex;
@@ -1046,10 +1038,6 @@ header{
     font-size:17px;
 
 }
-
-/* ==========================================
-            RESPONSIVE
-========================================== */
 
 @media(max-width:992px){
 
@@ -1117,9 +1105,6 @@ header{
 .about{
     scroll-margin-top:90px;
 }
-/* ==========================================
-            WORKFLOW
-========================================== */
 
 .workflow{
 
@@ -1221,10 +1206,6 @@ header{
 
 }
 
-/* ==========================================
-            CTA
-========================================== */
-
 .workflow-cta{
 
     margin-top:100px;
@@ -1277,10 +1258,6 @@ header{
 
 }
 
-/* ==========================================
-            RESPONSIVE
-========================================== */
-
 @media(max-width:1100px){
 
     .workflow-grid{
@@ -1312,9 +1289,6 @@ header{
     }
 
 }
-/* ==========================================
-            FEATURED SCHEMES
-========================================== */
 
 .featured{
 
@@ -1333,10 +1307,6 @@ header{
     margin-top:60px;
 
 }
-
-/* ==========================================
-            SCHEME CARD
-========================================== */
 
 .scheme-card{
 
@@ -1375,15 +1345,6 @@ header{
     box-shadow:0 25px 50px rgba(79,70,229,.18);
 
 }
-
-/* ==========================================
-            CATEGORY BADGE
-========================================== */
-
-/* ==========================================
-            CATEGORY BADGE
-========================================== */
-
 .scheme-category{
 
     display:inline-flex;
@@ -1417,10 +1378,6 @@ header{
 
 }
 
-/* ==========================================
-            TITLE
-========================================== */
-
 .scheme-card h3{
 
     font-size:24px;
@@ -1430,10 +1387,6 @@ header{
     line-height:1.4;
 
 }
-
-/* ==========================================
-            PROVIDER
-========================================== */
 
 .scheme-provider{
 
@@ -1459,10 +1412,6 @@ header{
 
 }
 
-/* ==========================================
-            DESCRIPTION
-========================================== */
-
 .scheme-description{
 
     color:#64748b;
@@ -1472,11 +1421,6 @@ header{
     margin-bottom:28px;
 
 }
-
-/* ==========================================
-            FOOTER
-========================================== */
-
 .scheme-footer{
 
     display:flex;
@@ -1488,10 +1432,6 @@ header{
     margin-top:auto;
 
 }
-
-/* ==========================================
-            ELIGIBILITY TAG
-========================================== */
 
 .scheme-tag{
 
@@ -1508,10 +1448,6 @@ header{
     font-weight:600;
 
 }
-
-/* ==========================================
-            BUTTON
-========================================== */
 
 .scheme-btn{
 
@@ -1551,10 +1487,6 @@ header{
 
 }
 
-/* ==========================================
-            TOP BORDER
-========================================== */
-
 .scheme-card::before{
 
     content:"";
@@ -1576,10 +1508,6 @@ header{
     );
 
 }
-
-/* ==========================================
-            RESPONSIVE
-========================================== */
 
 @media(max-width:768px){
 
@@ -1611,4 +1539,307 @@ header{
 
     }
 
+}
+
+.modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(15,23,42,.65);
+
+    backdrop-filter:blur(8px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.35s ease;
+
+    z-index:1000;
+
+}
+
+.modal-overlay.active{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+.scheme-modal{
+
+    width:min(1000px,92vw);
+
+    max-height:90vh;
+
+    overflow-y:auto;
+
+    background:rgba(255,255,255,.92);
+
+    backdrop-filter:blur(24px);
+
+    border-radius:30px;
+
+    padding:40px;
+
+    position:relative;
+
+    transform:translateY(30px);
+
+    transition:.35s ease;
+
+}
+
+.modal-overlay.active .scheme-modal{
+
+    transform:translateY(0);
+
+}
+
+.close-modal{
+
+    position:absolute;
+
+    top:25px;
+
+    right:25px;
+
+    border:none;
+
+    background:transparent;
+
+    cursor:pointer;
+
+}
+
+.close-modal i{
+
+    width:28px;
+
+    height:28px;
+
+}
+
+/* ==========================================
+            MODAL LISTS
+========================================== */
+
+.modal-section{
+
+    margin:15px 0;
+
+}
+
+.modal-section h3{
+
+    margin-bottom:12px;
+
+    font-size:20px;
+
+}
+
+.modal-section ul{
+
+    list-style:none;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.modal-section li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    background:rgba(79,70,229,.07);
+
+    transition:.3s ease;
+
+}
+.modal-section li:hover{
+
+    transform:translateX(6px);
+
+    background:rgba(79,70,229,.12);
+
+}
+
+.modal-section li i{
+
+    width:18px;
+
+    height:18px;
+
+    color:var(--primary);
+
+}
+
+.modal-footer{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:25px;
+
+    padding-top:20px;
+
+    border-top:1px solid rgba(0,0,0,.08);
+
+}
+/* ==========================================
+            MODAL HEADER
+========================================== */
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-bottom:20px;
+
+}
+
+.modal-header h2{
+
+    font-size:2.2rem;
+
+    margin:10px 0;
+
+    color:var(--text-primary);
+
+    line-height:1.2;
+
+}
+
+.modal-provider{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:8px 18px;
+
+    border-radius:999px;
+
+    background:rgba(59,130,246,.12);
+
+    color:#2563eb;
+
+    font-weight:600;
+
+}
+.modal-category{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:8px 18px;
+
+    border-radius:999px;
+
+    background:rgba(79,70,229,.12);
+
+    color:var(--primary);
+
+    font-weight:600;
+
+}
+
+.modal-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:22px;
+
+    margin-top:20px;
+
+}
+#providerInfo{
+
+    background:rgba(34,197,94,.08);
+
+    padding:18px;
+
+    border-radius:16px;
+
+    font-weight:600;
+
+    color:#16a34a;
+
+}
+.modal-footer{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:40px;
+
+}
+@media(max-width:768px){
+
+    .modal-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .scheme-modal{
+
+        padding:25px;
+
+    }
+
+    .modal-header h2{
+
+        font-size:1.6rem;
+
+    }
+
+}
+/* Hide scrollbar but keep scrolling */
+
+.scheme-modal{
+    overflow-y: auto;
+
+    /* Firefox */
+    scrollbar-width: none;
+
+    /* IE & Edge */
+    -ms-overflow-style: none;
+}
+
+/* Chrome, Edge, Safari */
+
+.scheme-modal::-webkit-scrollbar{
+    display: none;
 }
