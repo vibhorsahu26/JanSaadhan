@@ -435,3 +435,14 @@ document.addEventListener("keydown", (e) => {
     }
 
 });
+const checkEligibilityBtn = document.getElementById("checkEligibilityBtn");
+
+checkEligibilityBtn.addEventListener("click", () => {
+
+    document.getElementById("eligibility").scrollIntoView({
+
+        behavior: "smooth"
+
+    });
+
+});
