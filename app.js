@@ -269,21 +269,9 @@ function renderFeaturedSchemes() {
         schemeGrid.appendChild(card);
 
     });
-    
+
     lucide.createIcons();
 }
-document.addEventListener("DOMContentLoaded", () => {
-
-    renderFeaturedSchemes();
-
-});
-    /* ==========================================
-        MODAL REFERENCES
-        ========================================== */
-
-/* ==========================================
-        MODAL REFERENCES
-========================================== */
 
 const modal = {
 
@@ -311,28 +299,18 @@ const modal = {
 
 };
 
-
-
-/* ==========================================
-        OPEN MODAL
-========================================== */
-
-/* ==========================================
-        OPEN MODAL
-========================================== */
-
-function openSchemeModal(id){
+function openSchemeModal(id) {
 
     const scheme = featuredSchemes.find(item => item.id == id);
 
-    if(!scheme) return;
+    if (!scheme) return;
 
     modal.title.textContent = scheme.name;
 
     modal.category.textContent = scheme.category;
 
     // modal.provider.textContent = scheme.provider;
-    
+
     const providerInfo = document.getElementById("providerInfo");
 
     // providerInfo.textContent = scheme.provider;
@@ -347,55 +325,55 @@ function openSchemeModal(id){
 
     modal.eligibility.innerHTML = "";
 
-   modal.benefits.innerHTML = scheme.benefits
-    .map(item => `
+    modal.benefits.innerHTML = scheme.benefits
+        .map(item => `
         <li>
-            <i data-lucide="check"></i>
-            <span>${item}</span>
+        <i data-lucide="check"></i>
+        <span>${item}</span>
         </li>
-    `)
-    .join("");
+        `)
+        .join("");
 
-modal.documents.innerHTML = scheme.documents
-    .map(item => `
-        <li>
+    modal.documents.innerHTML = scheme.documents
+        .map(item => `
+            <li>
             <i data-lucide="file-check"></i>
             <span>${item}</span>
-        </li>
-    `)
-    .join("");
+            </li>
+            `)
+        .join("");
 
-modal.eligibility.innerHTML = scheme.eligibility
-    .map(item => `
-        <li>
-            <i data-lucide="badge-check"></i>
-            <span>${item}</span>
-        </li>
-    `)
-    .join("");
+    modal.eligibility.innerHTML = scheme.eligibility
+        .map(item => `
+                <li>
+                <i data-lucide="badge-check"></i>
+                <span>${item}</span>
+                </li>
+                `)
+        .join("");
 
     modal.overlay.classList.add("active");
-        
+
     document.body.style.overflow = "hidden";
 
     lucide.createIcons();
 
 }
 /* ==========================================
-        VIEW DETAILS BUTTONS
+VIEW DETAILS BUTTONS
 ========================================== */
 
-document.addEventListener("click",(e)=>{
+document.addEventListener("click", (e) => {
 
     const btn = e.target.closest(".view-details");
 
-    if(!btn) return;
+    if (!btn) return;
 
     openSchemeModal(btn.dataset.id);
 
 });
 /* ==========================================
-        CLOSE MODAL
+CLOSE MODAL
 ========================================== */
 
 modal.closeBtn.addEventListener("click", () => {
@@ -406,7 +384,7 @@ modal.closeBtn.addEventListener("click", () => {
 
 });
 /* ==========================================
-        CLOSE ON OUTSIDE CLICK
+CLOSE ON OUTSIDE CLICK
 ========================================== */
 
 modal.overlay.addEventListener("click", (e) => {
@@ -421,7 +399,7 @@ modal.overlay.addEventListener("click", (e) => {
 
 });
 /* ==========================================
-        ESC KEY SUPPORT
+ESC KEY SUPPORT
 ========================================== */
 
 document.addEventListener("keydown", (e) => {
@@ -437,18 +415,19 @@ document.addEventListener("keydown", (e) => {
 });
 const checkEligibilityBtn = document.getElementById("checkEligibilityBtn");
 
-checkEligibilityBtn.addEventListener("click", () => {
+if (checkEligibilityBtn) {
 
-    document.getElementById("eligibility").scrollIntoView({
+    checkEligibilityBtn.addEventListener("click", () => {
 
-        behavior: "smooth"
+        document.getElementById("eligibility").scrollIntoView({
+
+            behavior: "smooth"
+
+        });
 
     });
 
-});
-/* ==========================================
-        QUESTIONNAIRE DATA
-========================================== */
+}
 
 const questionnaire = [
 
@@ -653,3 +632,222 @@ const questionnaireContainer = document.getElementById("questionnaireContainer")
 const progressFill = document.getElementById("progressFill");
 
 const currentStepText = document.getElementById("currentStep");
+
+/* ==========================================
+RENDER QUESTIONNAIRE
+========================================== */
+
+function renderQuestionnaire() {
+
+    const step = questionnaire[currentStep];
+
+    currentStepText.textContent = currentStep + 1;
+
+    progressFill.style.width =
+        `${((currentStep + 1) / questionnaire.length) * 100}%`;
+
+    questionnaireContainer.innerHTML = `
+                
+                <h2 class="question-title">
+                
+                ${step.title}
+                
+                </h2>
+                
+                ${step.fields.map(field => {
+
+        if (field.type === "number") {
+
+            return `
+                        
+                        <div class="form-group">
+                        
+                        <label>${field.label}</label>
+                        
+                       <input
+                            type="number"
+                            id="${field.id}"
+                            placeholder="${field.placeholder}"
+                            value="${userAnswers[field.id] || ""}"
+                        >
+                        
+                        </div>
+                        
+                        `;
+
+        }
+
+        if (field.type === "text") {
+
+            return `
+                        
+                        <div class="form-group">
+                        
+                        <label>${field.label}</label>
+                        
+                        <input
+                            type="text"
+                            id="${field.id}"
+                            placeholder="${field.placeholder}"
+                            value="${userAnswers[field.id] || ""}"
+                        >
+                        
+                        </div>
+                        
+                        `;
+
+        }
+
+        if (field.type === "select") {
+
+            return `
+                        
+                        <div class="form-group">
+                        
+                        <label>${field.label}</label>
+                        
+                        <select id="${field.id}">
+                        
+                        ${field.options.map(option => `
+                            
+                           <option
+                            value="${option}"
+                            ${userAnswers[field.id] === option ? "selected" : ""}
+                        >
+                            
+                            ${option}
+                            
+                            </option>
+                            
+                            `).join("")}
+                            
+                            </select>
+                            
+                    </div>
+                    
+                    `;
+
+        }
+    }).join("")}
+            
+            <div class="question-actions">
+
+    ${currentStep > 0
+            ? `
+            <button
+                class="secondary-btn"
+                id="prevStep"
+            >
+                Previous
+            </button>
+          `
+            : ""
+        }
+    
+
+    <button
+        class="primary-btn"
+        id="nextStep"
+    >
+
+        ${currentStep === questionnaire.length - 1
+            ? "Find Schemes"
+            : "Next"
+        }
+
+    </button>
+
+</div>
+
+            
+            `;
+
+
+    const nextBtn = document.getElementById("nextStep");
+    const prevBtn = document.getElementById("prevStep");
+
+    if (prevBtn) {
+        prevBtn.addEventListener("click", () => {
+
+            saveCurrentStep();
+
+            currentStep--;
+
+            renderQuestionnaire();
+
+        });
+    }
+
+    nextBtn.addEventListener("click", () => {
+
+        if (!validateCurrentStep()) {
+            return;
+        }
+
+        saveCurrentStep();
+
+        if (currentStep < questionnaire.length - 1) {
+
+            currentStep++;
+
+            renderQuestionnaire();
+
+        } else {
+
+            alert("Eligibility engine coming next!");
+
+        }
+
+    });
+
+}
+
+function saveCurrentStep() {
+
+    const step = questionnaire[currentStep];
+
+    step.fields.forEach(field => {
+
+        const element = document.getElementById(field.id);
+
+        if (element) {
+
+            userAnswers[field.id] = element.value;
+
+        }
+
+    });
+
+
+}
+function validateCurrentStep() {
+
+    const step = questionnaire[currentStep];
+
+    for (const field of step.fields) {
+
+        const element = document.getElementById(field.id);
+
+        if (!element.value.trim()) {
+
+            alert(`Please enter ${field.label}.`);
+
+            element.focus();
+
+            return false;
+
+        }
+
+    }
+
+    return true;
+
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    renderFeaturedSchemes();
+
+    renderQuestionnaire();
+
+});
