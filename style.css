@@ -2016,3 +2016,159 @@ header{
     background:rgba(255,255,255,.08);
 
 }
+
+.match-score{
+
+    display:inline-block;
+
+    margin:12px 0;
+
+    padding:6px 12px;
+
+    background:#dcfce7;
+
+    color:#166534;
+
+    border-radius:999px;
+
+    font-size:0.85rem;
+
+    font-weight:600;
+
+}
+/* ==========================================
+            DARK THEME
+========================================== */
+
+body.dark{
+    --background: linear-gradient(135deg,#0f172a,#1e293b);
+    --text:#f8fafc;
+}
+/* Cards */
+
+body.dark .glass-card,
+body.dark .highlight-card,
+body.dark .about-card,
+body.dark .workflow-card,
+body.dark .scheme-card,
+body.dark .eligibility-card,
+body.dark .scheme-modal{
+
+    background:#1e293b;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#f8fafc;
+
+}
+
+/* Header */
+
+body.dark header{
+
+    background:rgba(15,23,42,.8);
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+/* Inputs */
+
+body.dark input,
+body.dark select{
+
+    background:#0f172a;
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,.15);
+
+}
+
+/* Paragraphs */
+
+body.dark p,
+body.dark span,
+body.dark .scheme-provider,
+body.dark .feature p,
+body.dark .about-feature p{
+
+    color:#cbd5e1;
+
+}
+
+/* Secondary Button */
+
+body.dark .secondary-btn{
+
+    background:#334155;
+
+    color:white;
+
+}
+
+/* No Results */
+
+body.dark .no-results{
+
+    background:#1e293b;
+
+}
+
+/* Progress */
+
+body.dark .progress-bar{
+
+    background:#334155;
+
+}
+.theme-toggle{
+
+    width:30px;
+
+    height:30px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:white;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    transition:.3s ease;
+
+}
+
+.theme-toggle:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.theme-toggle i{
+
+    width:22px;
+
+    height:22px;
+
+}
+
+body.dark .theme-toggle{
+
+    background:#334155;
+
+    color:white;
+
+}
+body {
+    background: var(--background);
+    color: var(--text);
+    overflow-x: hidden;
+    position: relative;
+    transition: background .3s ease, color .3s ease;
+}

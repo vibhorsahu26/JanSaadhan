@@ -41,15 +41,22 @@ const featuredSchemes = [
 
         criteria: {
             occupation: ["Farmer"],
+
             income: null,
+
             category: null,
+
             gender: null,
+
             age: {
                 min: 18,
                 max: 100
             },
+
             disability: null,
+
             bpl: null,
+
             state: null
         },
 
@@ -84,15 +91,27 @@ const featuredSchemes = [
 
         criteria: {
             occupation: null,
-            income: null,
+
+            income: [
+                "Below ₹1 Lakh",
+                "₹1-3 Lakh"
+            ],
+
             category: null,
+
             gender: null,
+
             age: {
-                min: 18,
+                min: 0,
                 max: 100
             },
+
             disability: null,
-            bpl: null,
+
+            bpl: [
+                "Yes"
+            ],
+
             state: null
         },
 
@@ -129,15 +148,28 @@ const featuredSchemes = [
 
         criteria: {
             occupation: null,
-            income: null,
+
+            income: [
+                "Below ₹1 Lakh",
+                "₹1-3 Lakh",
+                "₹3-5 Lakh"
+            ],
+
             category: null,
+
             gender: null,
+
             age: {
                 min: 18,
                 max: 100
             },
+
             disability: null,
-            bpl: null,
+
+            bpl: [
+                "Yes"
+            ],
+
             state: null
         },
 
@@ -221,18 +253,30 @@ const featuredSchemes = [
         ],
 
         criteria: {
-            occupation: [
-                "Student"
+            occupation: ["Student"],
+
+            income: [
+                "Below ₹1 Lakh",
+                "₹1-3 Lakh"
             ],
-            income: null,
-            category: null,
+
+            category: [
+                "SC",
+                "ST",
+                "OBC"
+            ],
+
             gender: null,
+
             age: {
-                min: 18,
-                max: 100
+                min: 16,
+                max: 30
             },
+
             disability: null,
+
             bpl: null,
+
             state: null
         },
 
@@ -275,15 +319,22 @@ const featuredSchemes = [
                 "Private Employee",
                 "Unemployed"
             ],
+
             income: null,
+
             category: null,
+
             gender: null,
+
             age: {
                 min: 18,
-                max: 100
+                max: 40
             },
+
             disability: null,
+
             bpl: null,
+
             state: null
         },
 
@@ -994,56 +1045,96 @@ function calculateMatchScore(scheme) {
 function findMatchingSchemes() {
 
     return featuredSchemes
-        .filter((scheme) => {
+        .map((scheme) => {
 
             const criteria = scheme.criteria;
 
-            if (!matchesCriteria(userAnswers.occupation, criteria.occupation))
-                return false;
+            let score = 0;
+            let total = 0;
 
-            if (!matchesCriteria(userAnswers.category, criteria.category))
-                return false;
+            // Occupation
+            if (criteria.occupation !== null) {
+                total++;
+                if (matchesCriteria(userAnswers.occupation, criteria.occupation))
+                    score++;
+            }
 
-            if (!matchesCriteria(userAnswers.gender, criteria.gender))
-                return false;
+            // Category
+            if (criteria.category !== null) {
+                total++;
+                if (matchesCriteria(userAnswers.category, criteria.category))
+                    score++;
+            }
 
-            if (!matchesCriteria(userAnswers.disability, criteria.disability))
-                return false;
+            // Gender
+            if (criteria.gender !== null) {
+                total++;
+                if (matchesCriteria(userAnswers.gender, criteria.gender))
+                    score++;
+            }
 
-            if (!matchesCriteria(userAnswers.bpl, criteria.bpl))
-                return false;
+            // Disability
+            if (criteria.disability !== null) {
+                total++;
+                if (matchesCriteria(userAnswers.disability, criteria.disability))
+                    score++;
+            }
 
-            if (!matchesCriteria(userAnswers.state, criteria.state))
-                return false;
+            // BPL
+            if (criteria.bpl !== null) {
+                total++;
+                if (matchesCriteria(userAnswers.bpl, criteria.bpl))
+                    score++;
+            }
 
-            if (!matchesCriteria(userAnswers.income, criteria.income))
-                return false;
+            // State
+            if (criteria.state !== null) {
+                total++;
+                if (matchesCriteria(userAnswers.state, criteria.state))
+                    score++;
+            }
 
+            // Income
+            if (criteria.income !== null) {
+                total++;
+                if (matchesCriteria(userAnswers.income, criteria.income))
+                    score++;
+            }
+
+            // Age
             if (criteria.age) {
+
+                total++;
 
                 const age = Number(userAnswers.age);
 
                 if (
-                    age < criteria.age.min ||
-                    age > criteria.age.max
+                    age >= criteria.age.min &&
+                    age <= criteria.age.max
                 ) {
-                    return false;
+                    score++;
                 }
             }
 
-            return true;
+            const matchScore =
+                total === 0
+                    ? 100
+                    : Math.round((score / total) * 100);
+
+            return {
+                ...scheme,
+                matchScore
+            };
 
         })
 
-        .map((scheme) => ({
-            ...scheme,
-            matchScore: calculateMatchScore(scheme)
-        }))
+        // only keep decent matches
+        .filter(scheme => scheme.matchScore >= 40)
 
+        // highest first
         .sort((a, b) => b.matchScore - a.matchScore);
 
 }
-
 function renderResults(matches) {
 
     const container = document.getElementById("resultsContainer");
@@ -1101,6 +1192,12 @@ function renderResults(matches) {
                 <span>${scheme.provider}</span>
 
             </div>
+
+            <div class="match-score">
+
+    ⭐ ${scheme.matchScore}% Match
+
+</div>
 
             <p class="scheme-description">
 
@@ -1167,5 +1264,39 @@ document.addEventListener("DOMContentLoaded", () => {
     renderFeaturedSchemes();
 
     renderQuestionnaire();
+
+});
+
+
+const themeToggle = document.getElementById("themeToggle");
+
+function updateThemeIcon() {
+
+    themeToggle.innerHTML = `
+        <i data-lucide="${
+            document.body.classList.contains("dark")
+                ? "sun"
+                : "moon"
+        }"></i>
+    `;
+
+    lucide.createIcons();
+}
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+}
+
+updateThemeIcon();
+
+themeToggle.addEventListener("click", () => {
+
+    console.log("clicked");
+
+    document.body.classList.toggle("dark");
+
+    console.log(document.body.classList);
+
+    updateThemeIcon();
 
 });
