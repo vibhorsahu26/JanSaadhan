@@ -446,3 +446,210 @@ checkEligibilityBtn.addEventListener("click", () => {
     });
 
 });
+/* ==========================================
+        QUESTIONNAIRE DATA
+========================================== */
+
+const questionnaire = [
+
+    {
+
+        title: "Basic Information",
+
+        fields: [
+
+            {
+
+                label: "Age",
+
+                type: "number",
+
+                id: "age",
+
+                placeholder: "Enter your age"
+
+            },
+
+            {
+
+                label: "Gender",
+
+                type: "select",
+
+                id: "gender",
+
+                options: [
+
+                    "Male",
+
+                    "Female",
+
+                    "Other"
+
+                ]
+
+            },
+
+            {
+
+                label: "Category",
+
+                type: "select",
+
+                id: "category",
+
+                options: [
+
+                    "General",
+
+                    "OBC",
+
+                    "SC",
+
+                    "ST"
+
+                ]
+
+            }
+
+        ]
+
+    },
+
+    {
+
+        title: "Financial & Location",
+
+        fields: [
+
+            {
+
+                label: "Annual Income",
+
+                type: "select",
+
+                id: "income",
+
+                options: [
+
+                    "Below ₹1 Lakh",
+
+                    "₹1-3 Lakh",
+
+                    "₹3-5 Lakh",
+
+                    "Above ₹5 Lakh"
+
+                ]
+
+            },
+
+            {
+
+                label: "State / UT",
+
+                type: "text",
+
+                id: "state",
+
+                placeholder: "Enter your State"
+
+            }
+
+        ]
+
+    },
+
+    {
+
+        title: "Occupation",
+
+        fields: [
+
+            {
+
+                label: "Occupation",
+
+                type: "select",
+
+                id: "occupation",
+
+                options: [
+
+                    "Student",
+
+                    "Farmer",
+
+                    "Self Employed",
+
+                    "Unemployed",
+
+                    "Senior Citizen",
+
+                    "Private Employee"
+
+                ]
+
+            }
+
+        ]
+
+    },
+
+    {
+
+        title: "Special Criteria",
+
+        fields: [
+
+            {
+
+                label: "Disability",
+
+                type: "select",
+
+                id: "disability",
+
+                options: [
+
+                    "No",
+
+                    "Yes"
+
+                ]
+
+            },
+
+            {
+
+                label: "BPL Card",
+
+                type: "select",
+
+                id: "bpl",
+
+                options: [
+
+                    "No",
+
+                    "Yes"
+
+                ]
+
+            }
+
+        ]
+
+    }
+
+];
+
+let currentStep = 0;
+
+const userAnswers = {};
+
+const questionnaireContainer = document.getElementById("questionnaireContainer");
+
+const progressFill = document.getElementById("progressFill");
+
+const currentStepText = document.getElementById("currentStep");
