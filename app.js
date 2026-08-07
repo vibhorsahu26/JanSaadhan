@@ -1,4 +1,7 @@
-let visibleSchemes = 6;
+// import {
+//     featuredSchemes,
+//     categoryIcons
+// } from "./data/schemes.js";
 const categoryIcons = {
     Education: "graduation-cap",
     Agriculture: "tractor",
@@ -1033,9 +1036,7 @@ const featuredSchemes = [
 
 ];
 
-/* ==========================================
-        RENDER FEATURED SCHEMES
-========================================== */
+let visibleSchemes = 6;
 
 function renderFeaturedSchemes() {
 
@@ -1081,7 +1082,7 @@ function renderFeaturedSchemes() {
 
                 <span class="scheme-tag">
 
-                    ${scheme.eligibility}
+                    ${scheme.eligibility.join(", ")}
 
                 </span>
 
@@ -1223,9 +1224,6 @@ function openSchemeModal(id) {
     lucide.createIcons();
 
 }
-/* ==========================================
-VIEW DETAILS BUTTONS
-========================================== */
 
 document.addEventListener("click", (e) => {
 
@@ -1236,9 +1234,6 @@ document.addEventListener("click", (e) => {
     openSchemeModal(btn.dataset.id);
 
 });
-/* ==========================================
-CLOSE MODAL
-========================================== */
 
 modal.closeBtn.addEventListener("click", () => {
 
@@ -1247,9 +1242,6 @@ modal.closeBtn.addEventListener("click", () => {
     document.body.style.overflow = "auto";
 
 });
-/* ==========================================
-CLOSE ON OUTSIDE CLICK
-========================================== */
 
 modal.overlay.addEventListener("click", (e) => {
 
@@ -1262,9 +1254,6 @@ modal.overlay.addEventListener("click", (e) => {
     }
 
 });
-/* ==========================================
-ESC KEY SUPPORT
-========================================== */
 
 document.addEventListener("keydown", (e) => {
 
@@ -1497,9 +1486,6 @@ const progressFill = document.getElementById("progressFill");
 
 const currentStepText = document.getElementById("currentStep");
 
-/* ==========================================
-RENDER QUESTIONNAIRE
-========================================== */
 
 function renderQuestionnaire() {
 
@@ -1931,7 +1917,7 @@ function renderResults(matches) {
 
                 <span class="scheme-tag">
 
-                    ${scheme.occupation}
+                    ${scheme.criteria.occupation?.join(", ") || "All"}
 
                 </span>
 
