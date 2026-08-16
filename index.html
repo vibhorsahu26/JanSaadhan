@@ -16,7 +16,7 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,700;0,800;1,600;1,700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
@@ -40,14 +40,13 @@
 
                 <a href="#" class="logo">
 
-                    <div class="logo-icon">
+                    <!-- <div class="logo-icon">
                         <i data-lucide="building-2"></i>
-                    </div>
+                    </div> -->
 
                     <div class="logo-text">
 
-                        <h2>JanSaadhan</h2>
-                        <span>Government Scheme Founder</span>
+                        <h1>JanSaadhan</h1>
 
                     </div>
 
@@ -69,9 +68,9 @@
 
                 </nav>
 
-                <a href="#eligibility" class="primary-btn">
+                <!-- <a href="#eligibility" class="primary-btn">
                     Check Eligibility
-                </a>
+                </a> -->
 
             </div>
 
@@ -91,7 +90,7 @@
 
                         <span class="badge">
 
-                            🇮🇳 Government Welfare Discovery Platform
+                           Central and state welfare, in one place
 
                         </span>
 
@@ -104,13 +103,6 @@
 
                         </h1>
 
-                        <p>
-
-                            Discover Central and State Government welfare
-                            schemes that match your profile in less than
-                            one minute through a simple questionnaire.
-
-                        </p>
 
                         <div class="hero-buttons">
 
@@ -123,44 +115,52 @@
                             </a>
 
                         </div>
+
+                        <div class="hero-stats">
+
+                            <div class="hero-stat">
+                                <h3>640+</h3>
+                                <span>Schemes Tracked</span>
+                            </div>
+
+                            <div class="hero-stat">
+                                <h3>28+</h3>
+                                <span>States &amp; UTs</span>
+                            </div>
+
+                            <div class="hero-stat hero-stat-source">
+                                <i data-lucide="shield-check"></i>
+                                <span>Sourced from official government portals</span>
+                            </div>
+
+                        </div>
                     </div>
 
                     <!-- Right -->
 
                     <div class="hero-card">
 
-                        <div class="glass-card">
+                        <div class="glass-card scheme-carousel" id="schemeCarousel">
 
-                            <h3>Why JanSaadhan?</h3>
+                            <div class="carousel-top">
 
-                            <div class="feature">
-
-                                <h4>🎯 Smart Matching</h4>
-
-                                <p>
-                                    Finds schemes tailored to your profile.
-                                </p>
+                                <span class="carousel-tag">
+                                    <i data-lucide="sparkles"></i>
+                                    Scheme Spotlight
+                                </span>
 
                             </div>
 
-                            <div class="feature">
+                            <div class="carousel-viewport">
 
-                                <h4>📄 Simple Summaries</h4>
-
-                                <p>
-                                    No complex government language.
-                                </p>
+                                <div class="carousel-track" id="carouselTrack">
+                                    <!-- Slides injected by JS -->
+                                </div>
 
                             </div>
 
-                            <div class="feature">
-
-                                <h4>🚀 Direct Application</h4>
-
-                                <p>
-                                    Apply directly through official portals.
-                                </p>
-
+                            <div class="carousel-dots" id="carouselDots">
+                                <!-- Dots injected by JS -->
                             </div>
 
                         </div>

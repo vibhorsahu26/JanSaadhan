@@ -1138,6 +1138,144 @@ if (viewMoreBtn) {
 
 }
 
+/* ==========================================
+            HERO SCHEME CAROUSEL
+========================================== */
+
+const carouselSchemes = featuredSchemes.slice(0, 6);
+
+let carouselIndex = 0;
+let carouselTimer = null;
+
+function renderCarousel() {
+
+    const track = document.getElementById("carouselTrack");
+    const dotsContainer = document.getElementById("carouselDots");
+
+    if (!track || !dotsContainer) return;
+
+    track.innerHTML = carouselSchemes
+        .map((scheme, index) => `
+            <div class="carousel-slide ${index === 0 ? "active" : ""}" data-index="${index}">
+
+                <div class="carousel-slide-category">
+                    <i data-lucide="${categoryIcons[scheme.category]}"></i>
+                    <span>${scheme.category}</span>
+                </div>
+
+                <h4>${scheme.name}</h4>
+
+                <p class="carousel-slide-provider">${scheme.provider}</p>
+
+                <ul class="carousel-benefits">
+                    ${scheme.benefits.slice(0, 3).map(benefit => `
+                        <li>
+                            <i data-lucide="check-circle"></i>
+                            <span>${benefit}</span>
+                        </li>
+                    `).join("")}
+                </ul>
+
+            </div>
+        `)
+        .join("");
+
+    dotsContainer.innerHTML = carouselSchemes
+        .map((_, index) => `
+            <button
+                class="carousel-dot ${index === 0 ? "active" : ""}"
+                data-index="${index}"
+                aria-label="Show scheme ${index + 1}"
+            ></button>
+        `)
+        .join("");
+
+    lucide.createIcons();
+
+    dotsContainer.querySelectorAll(".carousel-dot").forEach(dot => {
+
+        dot.addEventListener("click", () => {
+
+            goToCarouselSlide(Number(dot.dataset.index));
+
+            restartCarouselTimer();
+
+        });
+
+    });
+}
+
+function goToCarouselSlide(index) {
+
+    carouselIndex = index;
+
+    const track = document.getElementById("carouselTrack");
+    const dotsContainer = document.getElementById("carouselDots");
+
+    if (!track || !dotsContainer) return;
+
+    track.querySelectorAll(".carousel-slide").forEach(slide => {
+
+        slide.classList.toggle(
+            "active",
+            Number(slide.dataset.index) === carouselIndex
+        );
+
+    });
+
+    dotsContainer.querySelectorAll(".carousel-dot").forEach(dot => {
+
+        dot.classList.toggle(
+            "active",
+            Number(dot.dataset.index) === carouselIndex
+        );
+
+    });
+}
+
+function advanceCarousel() {
+
+    const nextIndex = (carouselIndex + 1) % carouselSchemes.length;
+
+    goToCarouselSlide(nextIndex);
+}
+
+function startCarouselTimer() {
+
+    carouselTimer = setInterval(advanceCarousel, 4000);
+}
+
+function restartCarouselTimer() {
+
+    clearInterval(carouselTimer);
+
+    startCarouselTimer();
+}
+
+function initCarousel() {
+
+    if (carouselSchemes.length === 0) return;
+
+    renderCarousel();
+
+    startCarouselTimer();
+
+    const carouselEl = document.getElementById("schemeCarousel");
+
+    if (carouselEl) {
+
+        // Pause auto-rotation on hover, resume on mouse leave
+        carouselEl.addEventListener("mouseenter", () => {
+            clearInterval(carouselTimer);
+        });
+
+        carouselEl.addEventListener("mouseleave", () => {
+            restartCarouselTimer();
+        });
+
+    }
+}
+
 const modal = {
 
     overlay: document.getElementById("modalOverlay"),
@@ -1282,6 +1420,36 @@ if (checkEligibilityBtn) {
 
 }
 
+/* ==========================================
+            AGE HELPER (calculated from Date of Birth)
+========================================== */
+
+function calculateAgeFromDob(dobString) {
+
+    if (!dobString) return null;
+
+    const dob = new Date(dobString);
+
+    if (isNaN(dob.getTime())) return null;
+
+    const today = new Date();
+
+    let age = today.getFullYear() - dob.getFullYear();
+
+    const monthDiff = today.getMonth() - dob.getMonth();
+
+    if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < dob.getDate())
+    ) {
+        age--;
+    }
+
+    return age;
+}
+
+const todayIso = new Date().toISOString().split("T")[0];
+
 const questionnaire = [
 
     {
@@ -1292,13 +1460,13 @@ const questionnaire = [
 
             {
 
-                label: "Age",
+                label: "Date of Birth",
 
-                type: "number",
+                type: "date",
 
-                id: "age",
+                id: "dob",
 
-                placeholder: "Enter your age"
+                max: todayIso
 
             },
 
@@ -1506,6 +1674,35 @@ function renderQuestionnaire() {
                 
                 ${step.fields.map(field => {
 
+        if (field.type === "date") {
+
+            return `
+
+                        <div class="form-group">
+
+                        <label>${field.label}</label>
+
+                        <input
+                            type="date"
+                            id="${field.id}"
+                            ${field.max ? `max="${field.max}"` : ""}
+                            value="${userAnswers[field.id] || ""}"
+                        >
+
+                        <span class="form-hint">
+                            ${
+                                userAnswers.dob
+                                    ? `Age: ${calculateAgeFromDob(userAnswers.dob)} years`
+                                    : "Pick your date of birth from the calendar"
+                            }
+                        </span>
+
+                        </div>
+
+                        `;
+
+        }
+
         if (field.type === "number") {
 
             return `
@@ -1612,6 +1809,30 @@ function renderQuestionnaire() {
             
             `;
 
+    // Live-update the age hint as the person picks a date of birth
+    const dobInput = document.getElementById("dob");
+
+    if (dobInput) {
+
+        dobInput.addEventListener("change", () => {
+
+            userAnswers.dob = dobInput.value;
+
+            userAnswers.age = calculateAgeFromDob(dobInput.value);
+
+            const hint = dobInput.parentElement.querySelector(".form-hint");
+
+            if (hint) {
+
+                hint.textContent = dobInput.value
+                    ? `Age: ${calculateAgeFromDob(dobInput.value)} years`
+                    : "Pick your date of birth from the calendar";
+
+            }
+
+        });
+
+    }
 
     const nextBtn = document.getElementById("nextStep");
     const prevBtn = document.getElementById("prevStep");
@@ -1673,6 +1894,12 @@ function saveCurrentStep() {
         if (element) {
 
             userAnswers[field.id] = element.value;
+
+            if (field.type === "date") {
+
+                userAnswers.age = calculateAgeFromDob(element.value);
+
+            }
 
         }
 
@@ -1961,6 +2188,22 @@ function validateCurrentStep() {
 
         }
 
+        if (field.type === "date") {
+
+            const age = calculateAgeFromDob(element.value);
+
+            if (age === null || age < 0 || age > 120) {
+
+                alert("Please enter a valid date of birth.");
+
+                element.focus();
+
+                return false;
+
+            }
+
+        }
+
     }
 
     return true;
@@ -1972,6 +2215,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderFeaturedSchemes();
 
     renderQuestionnaire();
+
+    initCarousel();
 
 });
 
